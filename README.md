@@ -20,6 +20,12 @@ A clean, professional HTML5 HLS (.m3u8) video player with quality selection supp
 
 Just load the player URL with your video link as the `video` query parameter:
 
+🟡 **INSTRUCTION:**  
+Replace the part after `video=` with your own `.m3u8` stream URL.
+
+📌 Example:  
+`https://piyash-org.github.io/hls/?video=https://yourdomain.com/path/to/stream.m3u8`
+
 You can also embed the player in your website or Blogger using an `<iframe>`:
 
 ```html
@@ -27,3 +33,4 @@ You can also embed the player in your website or Blogger using an `<iframe>`:
   src="https://piyash-org.github.io/hls/?video=https://stream.mux.com/02e6rVmN1V8C2qfeF8hHcfeNRevS4mQkOrWyAPi63OoI.m3u8"
   width="100%" height="480" frameborder="0" allowfullscreen>
 </iframe>
+mQkOrWyAPi
