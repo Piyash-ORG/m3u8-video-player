@@ -50,3 +50,26 @@ Use the following iframe code to embed this player into your site or Blogger pag
 </iframe>
 </code></pre>
 
+---
+
+✅ Replace the URL after video= with your own video link (.m3u8, .mp4, etc.)
+
+
+---
+
+❓ FAQ
+
+Q: Does it work with Google Drive links?
+A: ❌ No. Direct links required. Use a video hosting provider that gives public .mp4 or .m3u8 URLs.
+
+Q: Can I host my own player with this?
+A: ✅ Yes. Fork the repo and host it on GitHub Pages or any static server.
+
+
+---
+
+🧑‍💻 Built by Piyash ORG
+Feel free to fork, customize, and improve! Pull requests welcome. ❤️
+
+
+---
