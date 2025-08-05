@@ -1,66 +1,136 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>M3U8 Player with Quality Selector</title>
+  <meta charset="UTF-8" />
+  <title>Dark Themed M3U8 Player with Quality Selector</title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
-    video { width: 100%; max-width: 720px; height: auto; }
-    #qualitySelect { margin-top: 10px; }
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* Container for player */
+    .player-container {
+      width: 100%;
+      max-width: 720px;
+      background-color: #1e1e1e;
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Video styles */
+    video {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(255,255,255,0.1);
+      background-color: black;
+      outline: none;
+    }
+
+    /* Quality selector styles */
+    #qualitySelect {
+      margin-top: 12px;
+      padding: 8px 12px;
+      font-size: 16px;
+      background-color: #333;
+      color: #e0e0e0;
+      border: none;
+      border-radius: 8px;
+      width: 150px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #qualitySelect:hover, #qualitySelect:focus {
+      background-color: #555;
+      outline: none;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 480px) {
+      .player-container {
+        max-width: 100%;
+        padding: 10px;
+      }
+      #qualitySelect {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
 
-<video id="video" controls></video>
-<select id="qualitySelect"></select>
+  <div class="player-container">
+    <video id="video" controls playsinline></video>
+    <!-- কোয়ালিটি সিলেক্টর এখন ভিডিওর নিচে -->
+    <select id="qualitySelect" aria-label="Select video quality"></select>
+  </div>
 
-<script>
-  const video = document.getElementById('video');
-  const qualitySelect = document.getElementById('qualitySelect');
+  <script>
+    const video = document.getElementById('video');
+    const qualitySelect = document.getElementById('qualitySelect');
 
-  function getVideoUrl() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('video');
-  }
+    function getVideoUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('video');
+    }
 
-  const videoSrc = getVideoUrl() || 'https://stream.mux.com/9ROaqO00J54ZCf012G2T5EivVdZTSKtaOsId01Snessp1E.m3u8';
+    const videoSrc = getVideoUrl() || 'https://stream.mux.com/9ROaqO00J54ZCf012G2T5EivVdZTSKtaOsId01Snessp1E.m3u8';
 
-  if (Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(videoSrc);
-    hls.attachMedia(video);
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(videoSrc);
+      hls.attachMedia(video);
 
-    hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      const levels = hls.levels;
+      hls.on(Hls.Events.MANIFEST_PARSED, function () {
+        const levels = hls.levels;
 
-      qualitySelect.innerHTML = '';
+        qualitySelect.innerHTML = '';
 
-      const autoOption = document.createElement('option');
-      autoOption.value = -1;
-      autoOption.text = 'Auto';
-      autoOption.selected = true;
-      qualitySelect.appendChild(autoOption);
+        const autoOption = document.createElement('option');
+        autoOption.value = -1;
+        autoOption.text = 'Auto';
+        autoOption.selected = true;
+        qualitySelect.appendChild(autoOption);
 
-      levels.forEach((level, index) => {
-        const option = document.createElement('option');
-        option.value = index;
-        option.text = `${level.height}p`;
-        qualitySelect.appendChild(option);
+        levels.forEach((level, index) => {
+          const option = document.createElement('option');
+          option.value = index;
+          option.text = `${level.height}p`;
+          qualitySelect.appendChild(option);
+        });
+
+        qualitySelect.addEventListener('change', () => {
+          const selectedQuality = parseInt(qualitySelect.value);
+          hls.currentLevel = selectedQuality;
+        });
+
+        video.play();
       });
-
-      qualitySelect.addEventListener('change', () => {
-        const selectedQuality = parseInt(qualitySelect.value);
-        hls.currentLevel = selectedQuality;
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = videoSrc;
+      video.addEventListener('loadedmetadata', function () {
+        video.play();
       });
-
-      video.play();
-    });
-  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = videoSrc;
-    video.addEventListener('loadedmetadata', function () {
-      video.play();
-    });
-  }
-</script>
+    }
+  </script>
 
 </body>
-  </html>
+</html>
