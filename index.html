@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dark Themed M3U8 Player with Quality Selector</title>
+  <title>M3U8 Player with Quality Selector</title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
     /* Reset & base */
@@ -92,7 +92,7 @@
       return params.get('video');
     }
 
-    const videoSrc = getVideoUrl() || 'https://stream.mux.com/9ROaqO00J54ZCf012G2T5EivVdZTSKtaOsId01Snessp1E.m3u8';
+    const videoSrc = getVideoUrl() || '';
 
     if (Hls.isSupported()) {
       const hls = new Hls();
