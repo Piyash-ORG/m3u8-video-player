@@ -5,10 +5,7 @@
   <title>.   </title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
-    /* Reset & base */
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       background-color: #121212;
@@ -21,8 +18,6 @@
       min-height: 100vh;
       padding: 20px;
     }
-
-    /* Container for player */
     .player-container {
       width: 100%;
       max-width: 720px;
@@ -34,8 +29,6 @@
       flex-direction: column;
       align-items: center;
     }
-
-    /* Video styles */
     video {
       width: 100%;
       height: auto;
@@ -44,8 +37,6 @@
       background-color: black;
       outline: none;
     }
-
-    /* Quality selector styles */
     #qualitySelect {
       margin-top: 12px;
       padding: 8px 12px;
@@ -62,8 +53,6 @@
       background-color: #555;
       outline: none;
     }
-
-    /* Responsive tweaks */
     @media (max-width: 480px) {
       .player-container {
         max-width: 100%;
@@ -79,8 +68,7 @@
 
   <div class="player-container">
     <video id="video" controls playsinline></video>
-    <!-- কোয়ালিটি সিলেক্টর এখন ভিডিওর নিচে -->
-    <select id="qualitySelect" aria-label="Select video quality"></select>
+    <select id="qualitySelect" aria-label="Select video quality" style="display: none;"></select>
   </div>
 
   <script>
@@ -94,14 +82,14 @@
 
     const videoSrc = getVideoUrl() || '';
 
-    if (Hls.isSupported()) {
+    if (videoSrc.endsWith('.m3u8') && Hls.isSupported()) {
       const hls = new Hls();
       hls.loadSource(videoSrc);
       hls.attachMedia(video);
 
       hls.on(Hls.Events.MANIFEST_PARSED, function () {
         const levels = hls.levels;
-
+        qualitySelect.style.display = 'block';
         qualitySelect.innerHTML = '';
 
         const autoOption = document.createElement('option');
@@ -124,13 +112,18 @@
 
         video.play();
       });
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    } else if (video.canPlayType('application/vnd.apple.mpegurl') && videoSrc.endsWith('.m3u8')) {
       video.src = videoSrc;
-      video.addEventListener('loadedmetadata', function () {
-        video.play();
-      });
+      video.addEventListener('loadedmetadata', () => video.play());
+    } else {
+      // for .mp4, .webm, etc.
+      qualitySelect.style.display = 'none'; // hide quality selector
+      video.src = videoSrc;
+      video.addEventListener('loadedmetadata', () => video.play());
     }
   </script>
 
 </body>
 </html>
+
+
