@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>M3U8 Player with Quality Selector</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    video { width: 100%; max-width: 720px; height: auto; }
+    #qualitySelect { margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<video id="video" controls></video>
+<select id="qualitySelect"></select>
+
+<script>
+  const video = document.getElementById('video');
+  const qualitySelect = document.getElementById('qualitySelect');
+
+  function getVideoUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('video');
+  }
+
+  const videoSrc = getVideoUrl() || 'https://stream.mux.com/9ROaqO00J54ZCf012G2T5EivVdZTSKtaOsId01Snessp1E.m3u8';
+
+  if (Hls.isSupported()) {
+    const hls = new Hls();
+    hls.loadSource(videoSrc);
+    hls.attachMedia(video);
+
+    hls.on(Hls.Events.MANIFEST_PARSED, function () {
+      const levels = hls.levels;
+
+      qualitySelect.innerHTML = '';
+
+      const autoOption = document.createElement('option');
+      autoOption.value = -1;
+      autoOption.text = 'Auto';
+      autoOption.selected = true;
+      qualitySelect.appendChild(autoOption);
+
+      levels.forEach((level, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.text = `${level.height}p`;
+        qualitySelect.appendChild(option);
+      });
+
+      qualitySelect.addEventListener('change', () => {
+        const selectedQuality = parseInt(qualitySelect.value);
+        hls.currentLevel = selectedQuality;
+      });
+
+      video.play();
+    });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = videoSrc;
+    video.addEventListener('loadedmetadata', function () {
+      video.play();
+    });
+  }
+</script>
+
+</body>
+  </html>
