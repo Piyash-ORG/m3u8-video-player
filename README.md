@@ -42,7 +42,7 @@ Use the following iframe code to embed this player into your site or Blogger pag
 
 <pre><code>
 <iframe
-  src="https://piyash-org.github.io/stream/?video=https://yourdomain.com/yourfile.m3u8"
+  src="https://jiocreator.github.io/stream/?video=https://yourdomain.com/yourfile.m3u8"
   width="100%"
   height="480"
   frameborder="0"
