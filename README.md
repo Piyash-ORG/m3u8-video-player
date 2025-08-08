@@ -5,7 +5,7 @@
 A clean, professional HTML5 video player supporting both `.m3u8` (HLS) and direct video formats like `.mp4`. Fully responsive, quality selector enabled (for HLS), and embeddable in any site — including Blogger.
 
 📺 **Live Demo:**  
-[Click here to watch demo](https://piyash-org.github.io/stream/?video=https://stream.mux.com/02e6rVmN1V8C2qfeF8hHcfeNRevS4mQkOrWyAPi63OoI.m3u8)
+[Click here to watch demo](https://jiocreator.github.io/stream/?video=https://stream.mux.com/02e6rVmN1V8C2qfeF8hHcfeNRevS4mQkOrWyAPi63OoI.m3u8)
 
 ---
 
